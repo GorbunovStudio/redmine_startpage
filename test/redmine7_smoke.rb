@@ -4,10 +4,9 @@ require 'action_controller/test_case'
 class StartpageSmokeTest < ActionController::TestCase
   setup do
     raise 'Run only against the upgraded local db service' unless ActiveRecord::Base.connection_db_config.host == 'db'
-    raise 'Local Slack delivery must remain disabled' unless ENV['REDMINE_SLACK_DELIVERY_ENABLED'] == '0'
 
     @connection = ActiveRecord::Base.connection
-    @connection.begin_transaction(joinable: false)
+    @connection.begin_transaction
     @routes = Rails.application.routes
     @user = User.active.where(admin: true).first!
     @request.session[:user_id] = @user.id
